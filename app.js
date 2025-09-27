@@ -133,7 +133,11 @@ window.addEventListener('keydown', (e) => {
 });
 function openFromHash() { const m = location.hash.match(/^#m=(.+)$/); if (!m) return; const id = m[1]; const idx = MAPS.findIndex(x => slug(x.name || x.src) === id); if (idx >= 0) openViewer(idx); }
 
-// Inicialización
-renderGrid();
-openFromHash();
-window.addEventListener('hashchange', openFromHash);
+// ==========================================================
+// CAMBIO IMPORTANTE: La inicialización ahora está en una función
+// ==========================================================
+function initializeApp() {
+  renderGrid();
+  openFromHash();
+  window.addEventListener('hashchange', openFromHash);
+}
