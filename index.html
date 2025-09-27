@@ -22,7 +22,6 @@
   </div>
 
   <header style="display: none;">
-    <!-- ... (contenido del header sin cambios) ... -->
     <div class="top">
       <div class="brand">
         <div class="logo" aria-hidden="true"></div>
@@ -39,23 +38,41 @@
   </header>
 
   <main class="wrap" style="display: none;">
-    <!-- ... (contenido del main sin cambios) ... -->
     <div id="grid" class="grid"></div>
     <div id="empty" style="display:none; margin-top: 12px; color: var(--muted);">No hay mapas.</div>
   </main>
 
-  <!-- Visor -->
+  <!-- ========================================================== -->
+  <!-- ESTE ES EL BLOQUE QUE PROBABLEMENTE FALTABA O ESTABA INCOMPLETO -->
+  <!-- ========================================================== -->
   <div id="lightbox" class="lightbox" aria-hidden="true">
-    <!-- ... (contenido del visor sin cambios) ... -->
+    <div class="lb-top">
+      <div class="lb-title" id="lbTitle">Mapa</div>
+      <div class="lb-controls">
+        <button class="btn" id="shareBtn" title="Copiar enlace">🔗 Compartir</button>
+        <a class="btn" id="downloadBtn" download title="Descargar">⬇️ Descargar</a>
+        <button class="btn" id="closeBtn" title="Cerrar">✖️</button>
+      </div>
+    </div>
+    <div class="lb-canvas" id="lbCanvas">
+      <img id="lbImg" class="lb-img" alt="Mapa de territorio" />
+    </div>
+    <div class="lb-bottom">
+      <div class="lb-controls">
+        <button class="btn" id="zoomOutBtn" title="Alejar">➖</button>
+        <button class="btn" id="fitBtn" title="Ajustar a pantalla">🗖</button>
+        <button class="btn" id="zoomInBtn" title="Acercar">➕</button>
+      </div>
+      <div class="lb-controls">
+        <button class="btn" id="prevBtn" title="Anterior">⬅️</button>
+        <button class="btn" id="nextBtn" title="Siguiente">➡️</button>
+      </div>
+    </div>
   </div>
 
-  <!-- 1. Librería de Supabase -->
+  <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-  
-  <!-- 2. Nuestro script de autenticación -->
   <script src="auth.js" defer></script>
-
-  <!-- 3. Datos específicos de esta página -->
   <script defer>
     const MAPS = [
       { src: 'maps/1.png',  name: 'Pueblo Nuevo',             thumb: 'thumbs/1.png'  },
@@ -67,8 +84,6 @@
       { src: 'maps/14.png', name: 'El Pinar',                 thumb: 'thumbs/14.jpg' }
     ];
   </script>
-  
-  <!-- 4. Lógica principal de la aplicación -->
   <script src="app.js" defer></script>
 </body>
 </html>
