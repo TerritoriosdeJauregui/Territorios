@@ -1,10 +1,9 @@
 // auth.js - Lógica de autenticación con Supabase
 
 // --- CONFIGURACIÓN ---
-// ▼▼▼ ¡IMPORTANTE! REEMPLAZA ESTO CON TUS CLAVES REALES DE SUPABASE ▼▼▼
-const SUPABASE_URL = 'https://TU_ID_DE_PROYECTO.supabase.co'; // Pega tu URL aquí
-const SUPABASE_KEY = 'TU_CLAVE_ANON_PUBLICA';                // Pega tu anon key aquí
-// ▲▲▲ ¡IMPORTANTE! REEMPLAZA ESTO CON TUS CLAVES REALES DE SUPABASE ▲▲▲
+// Claves de tu proyecto de Supabase
+const SUPABASE_URL = 'https://ohhmreoawkzfunosjuxi.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9oaG1yZW9hd2t6ZnVub3NqdXhpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5OTUyNTIsImV4cCI6MjA3NDU3MTI1Mn0.C8ljM0DmeMVc0fTJSj8tDWJGmTrgTuJx76iFvtWYFqU';
 // -------------------
 
 const supabase = supabase_js.createClient(SUPABASE_URL, SUPABASE_KEY);
