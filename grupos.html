@@ -11,11 +11,17 @@
 <body>
   <!-- Overlay de autenticación -->
   <div id="auth" class="auth-overlay" aria-modal="true" role="dialog">
-    <!-- ... (contenido del auth-overlay sin cambios) ... -->
+    <div class="auth-card">
+      <div class="auth-title">Acceso a Mapas</div>
+      <div style="color:var(--muted); font-size:14px;">Inicia sesión para continuar.</div>
+      <input id="authEmail" type="email" class="auth-input" placeholder="Correo electrónico" autocomplete="email" />
+      <input id="authPass" type="password" class="auth-input" placeholder="Contraseña" autocomplete="current-password" />
+      <button class="pill primary" id="authOk" style="width:100%">Acceder</button>
+      <div id="authErr" class="auth-error">Datos incorrectos. Inténtalo de nuevo.</div>
+    </div>
   </div>
 
   <header style="display: none;">
-    <!-- ... (contenido del header sin cambios) ... -->
     <div class="top">
       <div class="brand">
         <div class="logo" aria-hidden="true"></div>
@@ -32,21 +38,41 @@
   </header>
 
   <main class="wrap" style="display: none;">
-    <!-- ... (contenido del main sin cambios) ... -->
+    <div id="grid" class="grid"></div>
+    <div id="empty" style="display:none; margin-top: 12px; color: var(--muted);">No hay mapas.</div>
   </main>
 
-  <!-- Visor -->
+  <!-- ========================================================== -->
+  <!-- ESTE ES EL BLOQUE QUE PROBABLEMENTE FALTABA O ESTABA INCOMPLETO -->
+  <!-- ========================================================== -->
   <div id="lightbox" class="lightbox" aria-hidden="true">
-    <!-- ... (contenido del visor sin cambios) ... -->
+    <div class="lb-top">
+      <div class="lb-title" id="lbTitle">Mapa</div>
+      <div class="lb-controls">
+        <button class="btn" id="shareBtn" title="Copiar enlace">🔗 Compartir</button>
+        <a class="btn" id="downloadBtn" download title="Descargar">⬇️ Descargar</a>
+        <button class="btn" id="closeBtn" title="Cerrar">✖️</button>
+      </div>
+    </div>
+    <div class="lb-canvas" id="lbCanvas">
+      <img id="lbImg" class="lb-img" alt="Grupo" />
+    </div>
+    <div class="lb-bottom">
+      <div class="lb-controls">
+        <button class="btn" id="zoomOutBtn" title="Alejar">➖</button>
+        <button class="btn" id="fitBtn" title="Ajustar a pantalla">🗖</button>
+        <button class="btn" id="zoomInBtn" title="Acercar">➕</button>
+      </div>
+      <div class="lb-controls">
+        <button class="btn" id="prevBtn" title="Anterior">⬅️</button>
+        <button class="btn" id="nextBtn" title="Siguiente">➡️</button>
+      </div>
+    </div>
   </div>
 
-  <!-- 1. Librería de Supabase -->
+  <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-
-  <!-- 2. Nuestro script de autenticación -->
   <script src="auth.js" defer></script>
-
-  <!-- 3. Datos específicos de esta página -->
   <script defer>
     const MAPS = [
       { src: 'maps/7.png',  name: 'Grupo 1', thumb: 'thumbs/7.png'  },
@@ -57,8 +83,6 @@
       { src: 'maps/12.png', name: 'Grupo 6', thumb: 'thumbs/12.png' }
     ];
   </script>
-  
-  <!-- 4. Lógica principal de la aplicación -->
   <script src="app.js" defer></script>
 </body>
 </html>
