@@ -1,5 +1,5 @@
 // ==========================================================
-// app.js (VERSIÓN FINAL, CORREGIDA Y COMPLETA)
+// app.js (VERSIÓN FINAL, PULIDA Y COMPLETA)
 // ==========================================================
 
 // La función principal que se ejecuta DESPUÉS del login exitoso
@@ -33,10 +33,14 @@ function initializeApp() {
   // --- LÓGICA DEL RENDERIZADO ---
   function renderGrid() {
     grid.innerHTML = '';
-    if (!window.MAPS || !window.MAPS.length) { empty.style.display = 'block'; return; }
+    // La variable MAPS ahora está disponible globalmente
+    if (!MAPS || !MAPS.length) {
+      empty.style.display = 'block';
+      return;
+    }
     empty.style.display = 'none';
     
-    window.MAPS.forEach((m, i) => {
+    MAPS.forEach((m, i) => {
       const card = document.createElement('div');
       card.className = 'card';
       card.dataset.id = slug(m.name || m.src);
@@ -56,7 +60,7 @@ function initializeApp() {
 
     $$('.pill[data-view]').forEach(b => b.addEventListener('click', () => openViewer(+b.dataset.view)));
     $$('.pill[data-copy]').forEach(b => b.addEventListener('click', () => {
-      const m = window.MAPS[+b.dataset.copy];
+      const m = MAPS[+b.dataset.copy];
       const url = `${location.origin}${location.pathname}#m=${slug(m.name || m.src)}`;
       copy(url);
       b.textContent = '✅ Copiado';
@@ -66,7 +70,7 @@ function initializeApp() {
 
   // --- LÓGICA DEL VISOR (LIGHTBOX) ---
   function openViewer(index) {
-    const m = window.MAPS[index];
+    const m = MAPS[index];
     if (!m) return;
     lb.idx = index;
     lb.img.src = m.src;
@@ -105,10 +109,10 @@ function initializeApp() {
   $('#zoomInBtn').addEventListener('click', () => { const r = lb.canvas.getBoundingClientRect(); zoomAt(r.width / 2, r.height / 2, 1.2); });
   $('#zoomOutBtn').addEventListener('click', () => { const r = lb.canvas.getBoundingClientRect(); zoomAt(r.width / 2, r.height / 2, 1 / 1.2); });
   $('#fitBtn').addEventListener('click', fitToScreen);
-  $('#prevBtn').addEventListener('click', () => openViewer((lb.idx - 1 + window.MAPS.length) % window.MAPS.length));
-  $('#nextBtn').addEventListener('click', () => openViewer((lb.idx + 1) % window.MAPS.length));
+  $('#prevBtn').addEventListener('click', () => openViewer((lb.idx - 1 + MAPS.length) % MAPS.length));
+  $('#nextBtn').addEventListener('click', () => openViewer((lb.idx + 1) % MAPS.length));
   $('#shareBtn').addEventListener('click', () => {
-    const m = window.MAPS[lb.idx];
+    const m = MAPS[lb.idx];
     const url = `${location.origin}${location.pathname}#m=${slug(m.name || m.src)}`;
     copy(url); const btn = $('#shareBtn'); const old = btn.textContent; btn.textContent = '✅ Copiado'; setTimeout(()=> btn.textContent = old, 1200);
   });
@@ -117,7 +121,7 @@ function initializeApp() {
   lb.canvas.addEventListener('wheel', (e) => { e.preventDefault(); const rect = lb.canvas.getBoundingClientRect(); zoomAt(e.clientX - rect.left, e.clientY - rect.top, e.deltaY > 0 ? 0.9 : 1.1); }, { passive: false });
   lb.canvas.style.touchAction = 'none';
   (function enableGestures() { const el = lb.canvas, pts = new Map(); let lastCenter = null, lastDist = 0; const getCenter = () => { const a = [...pts.values()]; return { x: (a[0].x + a[1].x) / 2, y: (a[0].y + a[1].y) / 2 }; }; const getDist = () => { const a = [...pts.values()]; return Math.hypot(a[1].x - a[0].x, a[1].y - a[0].y); }; if ('PointerEvent' in window) { el.addEventListener('pointerdown', e => { el.setPointerCapture(e.pointerId); pts.set(e.pointerId, { x: e.clientX, y: e.clientY }); if (pts.size === 1) { lb.dragging = true; lb.lx = e.clientX; lb.ly = e.clientY; el.style.cursor = 'grabbing'; } else if (pts.size === 2) { lastCenter = getCenter(); lastDist = getDist(); } }); el.addEventListener('pointermove', e => { const p = pts.get(e.pointerId); if (!p) return; p.x = e.clientX; p.y = e.clientY; if (pts.size === 1 && lb.dragging) { const dx = e.clientX - lb.lx, dy = e.clientY - lb.ly; lb.tx += dx; lb.ty += dy; lb.lx = e.clientX; lb.ly = e.clientY; renderTransform(); } else if (pts.size >= 2) { const c = getCenter(), d = getDist(); lb.tx += (c.x - lastCenter.x); lb.ty += (c.y - lastCenter.y); lastCenter = c; const rect = el.getBoundingClientRect(); const factor = d / lastDist; lastDist = d; zoomAt(c.x - rect.left, c.y - rect.top, factor); } }); ['pointerup', 'pointercancel', 'pointerleave', 'pointerout'].forEach(t => el.addEventListener(t, e => { pts.delete(e.pointerId); if (pts.size === 0) { lb.dragging = false; el.style.cursor = 'default'; } })); } let lastTap = 0; el.addEventListener('touchend', e => { const now = Date.now(); if (now - lastTap < 300 && e.changedTouches[0]) { const t = e.changedTouches[0]; const r = el.getBoundingClientRect(); zoomAt(t.clientX - r.left, t.clientY - r.top, 1.4); } lastTap = now; }, { passive: true }); })();
-
+  
   // Teclado y hash
   window.addEventListener('keydown', (e) => {
     if (!lb.el.classList.contains('open')) return;
@@ -130,7 +134,7 @@ function initializeApp() {
     const m = location.hash.match(/^#m=(.+)$/);
     if (!m) return;
     const id = m[1];
-    const idx = window.MAPS.findIndex(x => slug(x.name || x.src) === id);
+    const idx = MAPS.findIndex(x => slug(x.name || x.src) === id);
     if (idx >= 0) openViewer(idx);
   }
 
