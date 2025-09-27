@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Grupos - Congregación Jáuregui</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Overlay de autenticación -->
+  <div id="auth" class="auth-overlay" aria-modal="true" role="dialog">
+    <div class="auth-card">
+      <div class="auth-title">Acceso a Mapas</div>
+      <div style="color:var(--muted); font-size:14px;">Inicia sesión para continuar.</div>
+      <input id="authEmail" type="email" class="auth-input" placeholder="Correo electrónico" autocomplete="email" />
+      <input id="authPass" type="password" class="auth-input" placeholder="Contraseña" autocomplete="current-password" />
+      <button class="pill primary" id="authOk" style="width:100%">Acceder</button>
+      <div id="authErr" class="auth-error">Datos incorrectos. Inténtalo de nuevo.</div>
+    </div>
+  </div>
+
+  <header style="display: none;">
+    <div class="top">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div class="title">
+          <div style="font-size: 14px; color: var(--muted); font-weight: 700;">Congregación Jáuregui</div>
+          <div style="font-size: 18px;"><span>Grupos</span></div>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn" id="themeBtn" title="Cambiar tema">🌓 Tema</button>
+        <a class="link-btn" href="index.html" title="Ver territorios">🗺️ Territorios</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap" style="display: none;">
+    <div id="grid" class="grid"></div>
+    <div id="empty" style="display:none; margin-top: 12px; color: var(--muted);">No hay mapas.</div>
+  </main>
+
+  <!-- Visor -->
+  <div id="lightbox" class="lightbox" aria-hidden="true">
+    <div class="lb-top">
+      <div class="lb-title" id="lbTitle">Mapa</div>
+      <div class="lb-controls">
+        <button class="btn" id="shareBtn" title="Copiar enlace">🔗 Compartir</button>
+        <a class="btn" id="downloadBtn" download title="Descargar">⬇️ Descargar</a>
+        <button class="btn" id="closeBtn" title="Cerrar">✖️</button>
+      </div>
+    </div>
+    <div class="lb-canvas" id="lbCanvas">
+      <img id="lbImg" class="lb-img" alt="Grupo" />
+    </div>
+    <div class="lb-bottom">
+      <div class="lb-controls">
+        <button class="btn" id="zoomOutBtn" title="Alejar">➖</button>
+        <button class="btn" id="fitBtn" title="Ajustar a pantalla">🗖</button>
+        <button class="btn" id="zoomInBtn" title="Acercar">➕</button>
+      </div>
+      <div class="lb-controls">
+        <button class="btn" id="prevBtn" title="Anterior">⬅️</button>
+        <button class="btn" id="nextBtn" title="Siguiente">➡️</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Librería de Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Nuestro script de autenticación -->
+  <script src="auth.js"></script>
+
+  <!-- Datos específicos de la página -->
+  <script>
+    const MAPS = [
+      { src: 'maps/7.png',  name: 'Grupo 1', thumb: 'thumbs/7.png'  },
+      { src: 'maps/8.png',  name: 'Grupo 2', thumb: 'thumbs/8.png'  },
+      { src: 'maps/9.png',  name: 'Grupo 3', thumb: 'thumbs/9.png'  },
+      { src: 'maps/10.png', name: 'Grupo 4', thumb: 'thumbs/10.png' },
+      { src: 'maps/11.png', name: 'Grupo 5', thumb: 'thumbs/11.png' },
+      { src: 'maps/12.png', name: 'Grupo 6', thumb: 'thumbs/12.png' }
+    ];
+  </script>
+  
+  <!-- Lógica principal de la aplicación -->
+  <script src="app.js" defer></script>
+</body>
+</html>
