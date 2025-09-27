@@ -6,12 +6,10 @@ const SUPABASE_URL = 'https://ohhmreoawkzfunosjuxi.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9oaG1yZW9hd2t6ZnVub3NqdXhpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5OTUyNTIsImV4cCI6MjA3NDU3MTI1Mn0.C8ljM0DmeMVc0fTJSj8tDWJGmTrgTuJx76iFvtWYFqU';
 // -------------------
 
-// ESTA ES LA LÍNEA CORREGIDA FINAL
 // Usamos el objeto global "supabase" que viene de la librería
 // y lo asignamos a nuestra propia constante, que llamaremos "supabaseClient"
 const { createClient } = supabase;
 const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY);
-
 
 // Elementos del DOM
 const authOverlay = document.getElementById('auth');
@@ -27,6 +25,7 @@ function showContent() {
   authOverlay.style.display = 'none';
   mainContent.style.display = '';
   headerContent.style.display = '';
+  initializeApp(); // <-- CAMBIO IMPORTANTE: Llama a la función que dibuja los mapas
 }
 
 // Muestra el login y oculta el contenido
