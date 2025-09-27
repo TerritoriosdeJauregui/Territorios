@@ -42,9 +42,7 @@
     <div id="empty" style="display:none; margin-top: 12px; color: var(--muted);">No hay mapas.</div>
   </main>
 
-  <!-- ========================================================== -->
-  <!-- ESTE ES EL BLOQUE QUE PROBABLEMENTE FALTABA O ESTABA INCOMPLETO -->
-  <!-- ========================================================== -->
+  <!-- Visor -->
   <div id="lightbox" class="lightbox" aria-hidden="true">
     <div class="lb-top">
       <div class="lb-title" id="lbTitle">Mapa</div>
@@ -73,7 +71,9 @@
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="auth.js" defer></script>
-  <script defer>
+  
+  <!-- ESTE SCRIPT YA NO TIENE 'defer' -->
+  <script>
     const MAPS = [
       { src: 'maps/1.png',  name: 'Pueblo Nuevo',             thumb: 'thumbs/1.png'  },
       { src: 'maps/2.png',  name: 'Las Casuarinas',           thumb: 'thumbs/2.png'  },
@@ -84,6 +84,7 @@
       { src: 'maps/14.png', name: 'El Pinar',                 thumb: 'thumbs/14.jpg' }
     ];
   </script>
+
   <script src="app.js" defer></script>
 </body>
 </html>
