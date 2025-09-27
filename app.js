@@ -1,25 +1,20 @@
 // ==========================================================
-// app.js (VERSIÓN FINAL Y MÁS SEGURA)
+// app.js (VERSIÓN FINAL, CORREGIDA Y COMPLETA)
 // ==========================================================
 
 // La función principal que se ejecuta DESPUÉS del login exitoso
 function initializeApp() {
   
   // --- PREPARACIÓN ---
-  // Ahora que la página es visible, podemos seleccionar los elementos del DOM de forma segura.
-  
   const $ = (q) => document.querySelector(q);
   const $$ = (q) => Array.from(document.querySelectorAll(q));
   
   const grid = $('#grid');
   const empty = $('#empty');
   const lb = {
-    el: $('#lightbox'),
-    canvas: $('#lbCanvas'),
-    img: $('#lbImg'),
-    title: $('#lbTitle'),
-    download: $('#downloadBtn'),
-    idx: -1, scale: 1, tx: 0, ty: 0, min: 0.2, max: 8, dragging: false, lx: 0, ly: 0
+    el: $('#lightbox'), canvas: $('#lbCanvas'), img: $('#lbImg'), title: $('#lbTitle'),
+    download: $('#downloadBtn'), idx: -1, scale: 1, tx: 0, ty: 0, min: 0.2, max: 8,
+    dragging: false, lx: 0, ly: 0
   };
 
   // Funciones de utilidad
@@ -38,10 +33,7 @@ function initializeApp() {
   // --- LÓGICA DEL RENDERIZADO ---
   function renderGrid() {
     grid.innerHTML = '';
-    if (!window.MAPS || !window.MAPS.length) {
-      empty.style.display = 'block';
-      return;
-    }
+    if (!window.MAPS || !window.MAPS.length) { empty.style.display = 'block'; return; }
     empty.style.display = 'none';
     
     window.MAPS.forEach((m, i) => {
@@ -123,7 +115,8 @@ function initializeApp() {
   
   // Gestos (rueda, táctil, mouse)
   lb.canvas.addEventListener('wheel', (e) => { e.preventDefault(); const rect = lb.canvas.getBoundingClientRect(); zoomAt(e.clientX - rect.left, e.clientY - rect.top, e.deltaY > 0 ? 0.9 : 1.1); }, { passive: false });
-  // (El código de gestos es largo y no cambia, lo he omitido para brevedad pero debe estar aquí)
+  lb.canvas.style.touchAction = 'none';
+  (function enableGestures() { const el = lb.canvas, pts = new Map(); let lastCenter = null, lastDist = 0; const getCenter = () => { const a = [...pts.values()]; return { x: (a[0].x + a[1].x) / 2, y: (a[0].y + a[1].y) / 2 }; }; const getDist = () => { const a = [...pts.values()]; return Math.hypot(a[1].x - a[0].x, a[1].y - a[0].y); }; if ('PointerEvent' in window) { el.addEventListener('pointerdown', e => { el.setPointerCapture(e.pointerId); pts.set(e.pointerId, { x: e.clientX, y: e.clientY }); if (pts.size === 1) { lb.dragging = true; lb.lx = e.clientX; lb.ly = e.clientY; el.style.cursor = 'grabbing'; } else if (pts.size === 2) { lastCenter = getCenter(); lastDist = getDist(); } }); el.addEventListener('pointermove', e => { const p = pts.get(e.pointerId); if (!p) return; p.x = e.clientX; p.y = e.clientY; if (pts.size === 1 && lb.dragging) { const dx = e.clientX - lb.lx, dy = e.clientY - lb.ly; lb.tx += dx; lb.ty += dy; lb.lx = e.clientX; lb.ly = e.clientY; renderTransform(); } else if (pts.size >= 2) { const c = getCenter(), d = getDist(); lb.tx += (c.x - lastCenter.x); lb.ty += (c.y - lastCenter.y); lastCenter = c; const rect = el.getBoundingClientRect(); const factor = d / lastDist; lastDist = d; zoomAt(c.x - rect.left, c.y - rect.top, factor); } }); ['pointerup', 'pointercancel', 'pointerleave', 'pointerout'].forEach(t => el.addEventListener(t, e => { pts.delete(e.pointerId); if (pts.size === 0) { lb.dragging = false; el.style.cursor = 'default'; } })); } let lastTap = 0; el.addEventListener('touchend', e => { const now = Date.now(); if (now - lastTap < 300 && e.changedTouches[0]) { const t = e.changedTouches[0]; const r = el.getBoundingClientRect(); zoomAt(t.clientX - r.left, t.clientY - r.top, 1.4); } lastTap = now; }, { passive: true }); })();
 
   // Teclado y hash
   window.addEventListener('keydown', (e) => {
