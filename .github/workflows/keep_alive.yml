@@ -1,0 +1,17 @@
+name: Despertador Supabase - Congregación Jáuregui
+
+on:
+  schedule:
+    # Se ejecuta a las 05:00 AM (hora UTC) todos los Lunes y Jueves
+    - cron: '0 5 * * 1,4'
+  workflow_dispatch: # Esto permite activarlo a mano para probar
+
+jobs:
+  ping_supabase:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mantener base de datos activa
+        run: |
+          curl -i -X GET "${{ secrets.SUPABASE_URL }}/rest/v1/auth/v1/health" \
+          -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
+          -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}"
